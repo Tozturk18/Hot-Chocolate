@@ -51,7 +51,7 @@ If it still gives an error please contact me @Tozturk18 at tunaozturk2001@hotmai
 
 ## Usage
 <p style="text-align: justify">
-In the Examples folder, you can find a few apps that showcase the functionalities of Hot Chocolate. These are very simple examples such as Pong, Tetris, and Pac-Man. There are also some simple 3D examples too. I will be building a Minecraft replica of this eventually.
+In the Examples folder, you can find a few apps that showcase the functionalities of Hot Chocolate. These are very simple examples such as Pong, Tetris, and Pac-Man. There are also some simple 3D examples too. I will be building a Minecraft replica using Hot Chocolate eventually.
 </p>
 
 ### Running the program
@@ -64,6 +64,10 @@ Exec is an executable that runs on the Terminal, this allows for displaying prin
 Currently, this program supports user-intractable regular and irregular 2D and 3D polygons. Each class in the Utilities folder helps compartmentalize jobs.
 
 Moreover, each class in the Utilities folder helps compartmentalize jobs.
+
+- #### [Vector2](./Utilities/Vector2/Vector2.md): 2D Vector object with simple vector operations.
+- #### [Vector3](./Utilities/Vector3/Vector3.md): 3D Vector object with simple vector operations.
+- #### [Quaternion](./Utilities/Quaternion/Quaternion.md): 4D Quaternion object with simple quaternion operations.
 
 ## Contributing
 If you want to contribute to this repository you can either fork and try to do stuff on your own. If you are willing to work with me and become a part of this project please contact me and I can add you as a collaborator. 

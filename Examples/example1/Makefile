@@ -18,16 +18,16 @@ all: $(OUTPUT)
 
 # Compile and link the application
 $(OUTPUT): $(SOURCES)
-    $(CC) $(CFLAGS) -o $@ $^
-    if [ ! -d "$(APP_DIR)" ]; then mkdir -p $(APP_DIR); fi
-    cp $(OUTPUT) $(APP_DIR)
-    if [ ! -d "$(RESOURCES_DIR)" ]; then mkdir -p $(RESOURCES_DIR); fi
-    cp ../../DefaultApp/default.app/Resources/icon.icns $(RESOURCES_DIR)
-    cp ../../DefaultApp/default.app/Info.plist $(INFO_PLIST)
+	$(CC) $(CFLAGS) -o $@ $^
+	if [ ! -d "$(APP_DIR)" ]; then mkdir -p $(APP_DIR); fi
+	cp $(OUTPUT) $(APP_DIR)
+	if [ ! -d "$(RESOURCES_DIR)" ]; then mkdir -p $(RESOURCES_DIR); fi
+	cp ../../DefaultApp/default.app/Contents/Resources/icon.icns $(RESOURCES_DIR)
+	cp ../../DefaultApp/default.app/Contents/Info.plist $(INFO_PLIST)
 
 # Clean target
 clean:
-    rm -f $(OUTPUT)
+	rm -f $(OUTPUT)
 
 # Phony targets
 .PHONY: all clean
