@@ -95,6 +95,34 @@
     + (instancetype)initWithX:(CGFloat)x Y:(CGFloat)y Width:(CGFloat)width Height:(CGFloat)height {
         return [[Frame2 alloc] initWithPos:[Vector2 initWithX:x Y:y] Width:width Height:height];
     }
+
+    /**
+     * @brief Initializes a new instance of the Frame2 class using C bridgining with the specified 
+     *  x, y values for position and , width, and height.
+     *
+     * @param float: The x-coordinate of the bottom-left corner of the Frame2.
+     * @param float: The y-coordinate of the bottom-left corner of the Frame2.
+     * @param float: The width of the Frame2.
+     * @param float: The height of the Frame2.
+     * 
+     * @return A new instance of the Frame2 class.
+     */
+    Frame2* initFrame2(float x, float y, float width, float height) {
+        return [[Frame2 alloc] initWithPos:[Vector2 initWithX:x Y:y] Width:width Height:height];
+    }
+
+    /**
+     * @brief Initializes a new instance of the Frame2 class with the specified position, and dimension vectors.
+     *
+     * @param Vector2*: pos The position of the bottom-left corner of the Frame2.
+     * @param Vector2*: dim The dimensions of the Frame2.
+     *
+     * @return A new instance of the Frame2 class.
+     */
+    Frame2* initFrame2WithVector2s(Vector2* pos, Vector2* dim) {
+        return [[Frame2 alloc] initWithPos:pos Width:dim.x Height:dim.y];
+    }
+
     /* --- End of Initializers --- */
 
     /* --- Deinitializer --- */
@@ -106,6 +134,16 @@
         // Deallocate the memory occupied by the object.
         [super dealloc];
     }
+
+    /**
+     * @brief Deallocates the memory occupied by the object.
+     *
+     * @param frame The object to deallocate.
+     */
+    void freeFrame2(Frame2* frame) {
+        // Deallocate the memory occupied by the object.
+        [frame dealloc];
+    }
     /* --- End of Deinitializer --- */
 
     /* --- Methods --- */
@@ -114,11 +152,16 @@
      * @brief scales the Frame2 by the specified factor.
      *
      * @param factor The factor to scale the Frame2.
+     *
+     * @return The scaled Frame2.
      */
-    - (void)scale:(CGFloat)factor {
+    - (Frame2*)scale:(CGFloat)factor {
         // Scale the Frame2 by the specified factor.
-        self.width *= factor;
-        self.height *= factor;
+        return [[Frame2 alloc] initWithPos:[self.position copy] Width:self.width*factor Height:self.height*factor];
+    }
+    Frame2* Frame2Scale(Frame2* frame, float factor) {
+        // Scale the Frame2 by the specified factor.
+        return [frame scale:factor];
     }
 
     /**
@@ -126,51 +169,111 @@
      *
      * @param xFactor The factor to scale the Frame2's width.
      * @param yFactor The factor to scale the Frame2's height.
+     *
+     * @return The scaled Frame2.
      */
-    - (void)scaleWidth:(CGFloat)xFactor Height:(CGFloat)yFactor {
+    - (Frame2*)scaleWidth:(CGFloat)xFactor Height:(CGFloat)yFactor {
         // Scale the Frame2's width and height components with different scale factors.
-        self.width *= xFactor;
-        self.height *= yFactor;
+        return [[Frame2 alloc] initWithPos:[self.position copy] Width:self.width*xFactor Height:self.height*yFactor];
+    }
+    Frame2* Frame2ScaleWidthHeight(Frame2* frame, float xFactor, float yFactor) {
+        // Scale the Frame2's width and height components with different scale factors.
+        return [frame scaleWidth:xFactor Height:yFactor];
     }
 
     /**
      * @brief Scales only the width of the Frame2
      * 
      * @param xFactor the factor to scale the Frame2's width
+     *
+     * @return The scaled Frame2.
      */
-    - (void)scaleWidth:(CGFloat)xFactor {
+    - (Frame2*)scaleWidth:(CGFloat)xFactor {
         // Scale only the width of the Frame2
-        self.width *= xFactor;
+        return [[Frame2 alloc] initWithPos:[self.position copy] Width:self.width*xFactor Height:self.height];
+    }
+    Frame2* Frame2ScaleWidth(Frame2* frame, float xFactor) {
+        // Scale only the width of the Frame2.
+        return [frame scaleWidth:xFactor];
     }
 
     /**
      * @brief Scales only the height of the Frame2
      * 
      * @param yFactor the factor to scale the Frame2's height
+     *
+     * @return The scaled Frame2.
      */
-    - (void)scaleHeight:(CGFloat)yFactor {
+    - (Frame2*)scaleHeight:(CGFloat)yFactor {
         // Scale only the height of the Frame2
-        self.height *= yFactor;
+        return [[Frame2 alloc] initWithPos:[self.position copy] Width:self.width Height:self.height*yFactor];
     }
+    Frame2* Frame2ScaleHeight(Frame2* frame, float yFactor) {
+        // Scale only the height of the Frame2.
+        return [frame scaleHeight:yFactor];
+    }
+
+    /**
+     * @brief Creates a new copy of the Frame2 object.
+     *
+     * @return A new copy of the Frame2 object.
+     */
+    - (Frame2*)copy {
+        // Create a new copy of the Frame2 object.
+        return [[Frame2 alloc] initWithPos:[self.position copy] Width:self.width Height:self.height];
+    }
+    Frame2* Frame2Copy(Frame2* frame) {
+        // Create a new copy of the Frame2 object.
+        return [frame copy];
+    }
+
+    /**
+     * @brief Returns the description of the Frame2 object as a string.
+     *
+     * @return The description of the Frame2 object.
+     *
+     * @note The description includes the position, width, and height of the Frame2 object.
+     */
+    - (NSString *)description {
+        // Return the description of the Frame2 object as a string.
+        return [NSString stringWithFormat:@"[%@, (%f, %f)]", [self.position description], self.width, self.height];
+    }
+    char* Frame2Description(Frame2* frame) {
+        // Return the description of the Frame2 object as a string.
+        return (char*)[[frame description] UTF8String];
+    }
+    
 
     /**
      * @brief Moves the object using the specified vector.
      * 
      * @param vector The vector to move the object.
+     *
+     * @return The moved object.
      */
-    - (void)moveWithVector:(Vector2 *)vector {
+    - (Frame2*)moveWithVector:(Vector2 *)vector {
         // Move the object using the specified vector.
-        [self.position add:vector];
+        return [[Frame2 alloc] initWithPos:[self.position add:vector] Width:self.width Height:self.height];
+    }
+    Frame2* Frame2MoveWithVector(Frame2* frame, Vector2* vector) {
+        // Move the object using the specified vector.
+        return [frame moveWithVector:vector];
     }
 
     /**
      * @brief Moves the object to the specified position.
      *
      * @param position The position to move the object.
+     *
+     * @return The moved object.
      */
-    - (void)moveToPos:(Vector2 *)position {
+    - (Frame2*)moveToPos:(Vector2 *)position {
         // Move the object to the specified position.
-        self.position = [position copy];
+        return [[Frame2 alloc] initWithPos:position Width:self.width Height:self.height];
+    }
+    Frame2* Frame2MoveToPos(Frame2* frame, Vector2* position) {
+        // Move the object to the specified position.
+        return [frame moveToPos:position];
     }
 
     /**
@@ -178,22 +281,32 @@
      *
      * @param angle The angle in degrees to rotate the object.
      * @param point The point to rotate the object around.
+     *
+     * @return The rotated object.
      */
-    - (void)rotateByDegrees:(CGFloat)angle aroundPoint:(Vector2 *)point {
+    - (Frame2*)rotateByDegrees:(CGFloat)angle aroundPoint:(Vector2 *)point {
         // Rotate the object by the specified angle around the specified point.
-        for (int i = 0; i < self.vertices.count; i++) {
-            [self.vertices[i] rotateByDegrees:angle aroundPoint:point];
-        }
+        return [self rotateByRadians:angle * M_PI / 180 aroundPoint:point];
+    }
+    Frame2* Frame2RotateByDegreesAroundPoint(Frame2* frame, float angle, Vector2* point) {
+        // Rotate the object by the specified angle in degrees around the specified point.
+        return [frame rotateByDegrees:angle aroundPoint:point];
     }
 
     /**
      * @brief Rotates the object by the specified angle in degrees around its center.
      *
      * @param angle The angle in degrees to rotate the object.
+     *
+     * @return The rotated object.
      */
-    - (void)rotateByDegrees:(CGFloat)angle {
+    - (Frame2*)rotateByDegrees:(CGFloat)angle {
         // Rotate the object by the specified angle around its center.
-        [self rotateByDegrees:angle aroundPoint:[Vector2 initWithX:(self.vertices[0].x+self.width/2) Y:(self.vertices[0].y+self.height/2)]];
+        return [self rotateByDegrees:angle aroundPoint:[Vector2 initWithX:(self.vertices[0].x+self.width/2) Y:(self.vertices[0].y+self.height/2)]];
+    }
+    Frame2* Frame2RotateByDegrees(Frame2* frame, float angle) {
+        // Rotate the object by the specified angle in degrees around its center.
+        return [frame rotateByDegrees:angle];
     }
 
     /**
@@ -201,24 +314,41 @@
      *
      * @param angle The angle in radians to rotate the object.
      * @param point The point to rotate the object around.
+     *
+     * @return The rotated object.
      */
-    - (void)rotateByRadians:(CGFloat)angle aroundPoint:(Vector2 *)point {
+    - (Frame2*)rotateByRadians:(CGFloat)angle aroundPoint:(Vector2 *)point {
+        // Copy the current object
+        Frame2* copy = [self copy];
+
         // Rotate the object by the specified angle around the specified point.
-        for (int i = 0; i < self.vertices.count; i++) {
-            [self.vertices[i] rotateByRadians:angle aroundPoint:point];
+        for (int i = 0; i < copy.vertices.count; i++) {
+            [copy.vertices[i] rotateByRadians:angle aroundPoint:point];
         }
+
+        return copy;
+    }
+    Frame2* Frame2RotateByRadiansAroundPoint(Frame2* frame, float angle, Vector2* point) {
+        // Rotate the object by the specified angle in radians around the specified point.
+        return [frame rotateByRadians:angle aroundPoint:point];
     }
 
     /**
      * @brief Rotates the object by the specified angle in radians around its center.
      *
      * @param angle The angle in radians to rotate the object.
+     *
+     * @return The rotated object.
      */
-    - (void)rotateByRadians:(CGFloat)angle {
+    - (Frame2*)rotateByRadians:(CGFloat)angle {
         // Rotate the object by the specified angle around its center.
-        [self rotateByRadians:angle aroundPoint:[Vector2 initWithX:(self.vertices[0].x+self.width/2) Y:(self.vertices[0].y+self.height/2)]];
+        return [self rotateByRadians:angle aroundPoint:[Vector2 initWithX:(self.vertices[0].x+self.width/2) Y:(self.vertices[0].y+self.height/2)]];
     }
-    /* --- End of Methods --- */
+    Frame2* Frame2RotateByRadians(Frame2* frame, float angle) {
+        // Rotate the object by the specified angle in radians around its center.
+        return [frame rotateByRadians:angle];
+    }
 
+    /* --- End of Methods --- */
 @end
 /* --- End of Implementation --- */

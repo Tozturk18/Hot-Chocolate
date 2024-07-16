@@ -22,28 +22,35 @@
     @property (nonatomic, assign) Frame2 *frame;        // 2D Frame of the window
     @property (nonatomic, assign) NSWindow *window;     // MacOS window object
     @property (nonatomic, assign) NSApplication *app;   // MacOS application object
-
-    @property (nonatomic, assign) NSString *title;      // Title of the window
-
-    @property (nonatomic, assign) NSColor *backgroundColor;  // Background color of the window
     @property (nonatomic, assign) NSView *contentView;      // Content view of the window
+
+    //@property (nonatomic, assign) WindowProperties *properties;  // Properties of the window
     /* --- End of Properties --- */
 
     /* --- Initializers --- */
     - (instancetype)initWithFrame:(Frame2*)frame;       // Create a new window with a frame
     + (instancetype)initWithFrame:(Frame2*)frame;       // Create a new window with a frame and allocate memory for it
+    + (instancetype)initWithX:(CGFloat)x Y:(CGFloat)y Width:(CGFloat)width Height:(CGFloat)height;  // Create a new window with a frame and allocate memory for it
+    //Window* initWindow(Frame2 *frame);  // Initialize the properties of the window
+    Window* initWindow(float x, float y, float width, float height);  // Initialize the properties of the window
     /* --- End of Initializers --- */
 
     /* --- Deinitializers --- */
     - (void)dealloc;      // Deallocate the memory of the window
+    void freeWindow(Window* window);  // Deallocate the memory of the window
     /* --- End of Deinitializers --- */
 
     /* --- Methods --- */
     - (void)show;       // Show the window
+    void showWindow(Window* window);        // Show the window
     - (void)hide;       // Hide the window
+    void hideWindow(Window* window);        // Hide the window
     - (void)close;      // Close the window
+    void closeWindow(Window* window);       // Close the window
 
-    /*- (void)setTitle:(NSString*)title;  // Set the title of the window
+    /* TODO: Implement the following methods */
+    /*
+    - (void)setTitle:(NSString*)title;  // Set the title of the window
     - (void)setBackgroundColor:(NSColor*)color;  // Set the background color of the window
     - (void)setFrame:(Frame2*)frame;  // Set the frame of the window
     - (void)setContentView:(NSView*)view;  // Set the content view of the window
@@ -63,7 +70,8 @@
     - (void)setAcceptsMouseMovedEvents:(BOOL)acceptsMouseMovedEvents;  // Set the mouse moved event behavior of the window
     - (void)setIgnoresMouseEvents:(BOOL)ignoresMouseEvents;  // Set the mouse event behavior of the window
     - (void)setRestorable:(BOOL)restorable;  // Set the restorability of the window
-    - (void)setExcludedFromWindowsMenu:(BOOL)excludedFromWindowsMenu;  // Set the exclusion from windows menu behavior of the window*/
+    - (void)setExcludedFromWindowsMenu:(BOOL)excludedFromWindowsMenu;  // Set the exclusion from windows menu behavior of the window
+    */
     /* --- End of Methods --- */
 
 @end

@@ -24,7 +24,7 @@
 
     /**
      * @brief Initializes the Quaternion object with the given Vector3 and w values.
-     * 
+     *
      * @param w: The w component of the quaternion.
      * @param Vector3: The Vector3 object that holds the x, y, and z components of the quaternion.
      * @return instancetype: The initialized Quaternion object.
@@ -114,6 +114,42 @@
         return [self initWithW:0 Vector:vector];
     }
 
+    /**
+     * @brief Initialize Quaternion object with given axis and w component.
+     *
+     * @param w: The w component of the quaternion.
+     * @param axis: The axis of rotation.
+     *
+     * @return instancetype: The initialized Quaternion object.
+     */
+    Quaternion* initQuaternionWithW(float w, Vector3 *axis) {
+        // Return the initialized Quaternion object with the given w and axis.
+        return [Quaternion initWithW:w Vector:axis];
+    }
+
+    /**
+     * @bried Initialize Quaternion object with given axis and angle in degrees.
+     *
+     * @param angle: The angle in degrees.
+     * @param axis: The axis of rotation.
+     * @return instancetype: The initialized Quaternion object.
+     */
+    Quaternion* initQuaternionWithDegrees(float angle, Vector3 *axis) {
+        // Return the initialized Quaternion object with the given angle and axis.
+        return [Quaternion initWithDegrees:angle Vector:axis];
+    }
+
+    /**
+     * @bried Initialize Quaternion object with given axis and angle in radians.
+     *
+     * @param angle: The angle in radians.
+     * @param axis: The axis of rotation.
+     * @return instancetype: The initialized Quaternion object.
+     */
+    Quaternion* initQuaternionWithRadians(float angle, Vector3 *axis) {
+        // Return the initialized Quaternion object with the given angle and axis.
+        return [Quaternion initWithRadians:angle Vector:axis];
+    }
     /* --- End of Initializers --- */
 
     /* --- Deinitlialize --- */
@@ -126,6 +162,14 @@
         [self.vector dealloc];
         // Call the super class's deinitilize method.
         [super dealloc];
+    }
+
+    /**
+     * @brief Deinitializes the Quaternion object.
+     */
+    void freeQuaternion(Quaternion *q) {
+        // Release the Quaternion object.
+        [q dealloc];
     }
     /* --- End of Deinitlialize --- */
 
@@ -141,6 +185,10 @@
         // Return a new Quaternion object with the sum of the two quaternions.
         return [Quaternion initWithW:self.w + quaternion.w Vector:[self.vector add:quaternion.vector]];
     }
+    Quaternion* QuaternionAdd(Quaternion *q1, Quaternion *q2) {
+        // Return the sum of the two quaternions.
+        return [q1 add:q2];
+    }
 
     /**
      * @brief Subtracts the given Quaternion from the current Quaternion.
@@ -151,6 +199,10 @@
     - (Quaternion*)subtract:(Quaternion*)quaternion {
         // Return a new Quaternion object with the difference of the two quaternions.
         return [Quaternion initWithW:self.w - quaternion.w Vector:[self.vector subtract:quaternion.vector]];
+    }
+    Quaternion* QuaternionSubtract(Quaternion *q1, Quaternion *q2) {
+        // Return the difference of the two quaternions.
+        return [q1 subtract:q2];
     }
 
     /**
@@ -175,6 +227,10 @@
         // Return a new Quaternion object with the calculated values.
         return [Quaternion initWithW:w Vector:vector];
     }
+    Quaternion* QuaternionMultiply(Quaternion *q1, Quaternion *q2) {
+        // Return the product of the two quaternions.
+        return [q1 multiply:q2];
+    }
 
     /**
      * @brief Multiplies the current Quaternion with the given scalar.
@@ -186,6 +242,41 @@
         // Return a new Quaternion object with the product of the quaternion and the scalar.
         return [Quaternion initWithW:self.w * scalar Vector:[self.vector multiply:scalar]];
     }
+    Quaternion* QuaternionScalarMultiply(Quaternion *q, float scalar) {
+        // Return the product of the quaternion and the scalar.
+        return [q scalarMultiply:scalar];
+    }
+
+    /**
+     * @brief Divides the current Quaternion with a given quaternion
+     *
+     * @param quaternion: The Quaternion object to divide.
+     *
+     * @return Quaternion: The resulting Quaternion object.
+     */
+    - (NSArray<Quaternion*>*)divide:(Quaternion*)quaternion {
+        // Create a NSArray with 2 elements
+        NSMutableArray<Quaternion*> *results = [[NSMutableArray alloc] initWithCapacity:2];
+        // Populate the 2 elements with the 2 possible outcomes of the division
+        [results addObject:[self multiply:[quaternion inverse]]];
+        [results addObject:[[quaternion inverse] multiply:self]];
+        // Return the results
+        return results;
+    }
+    Quaternion** QuaternionDivide(Quaternion *q1, Quaternion *q2) {
+        // Divide the two quaternions and store the results in the array
+        NSArray<Quaternion*> *results = [q1 divide:q2];
+        // Create a pointer to an array of results.length Quaternion objects
+        Quaternion** Cresults = (Quaternion**)malloc([results count] * sizeof(Quaternion*));
+        // Populate the array with the results
+        for (int i = 0; i < [results count]; i++) {
+            Cresults[i] = [results objectAtIndex:i];
+        }
+        // Release the results array
+        [results release];
+        // Return the array of results
+        return Cresults;
+    }
 
     /**
      * @brief Divides the current Quaternion with the given scalar.
@@ -193,9 +284,13 @@
      * @param CGFloat: The scalar to be divided.
      * @return Quaternion: The resulting Quaternion object.
      */
-    - (Quaternion*)divide:(CGFloat)scalar {
+    - (Quaternion*)scalarDivide:(CGFloat)scalar {
         // Return a new Quaternion object with the product of the quaternion and the scalar.
         return [Quaternion initWithW:self.w / scalar Vector:[self.vector divide:scalar]];
+    }
+    Quaternion* QuaternionScalarDivide(Quaternion *q, float scalar) {
+        // Return the quotient of the quaternion and the scalar.
+        return [q scalarDivide:scalar];
     }
 
     /**
@@ -205,7 +300,11 @@
      */
     - (CGFloat)length {
         // Return the length of the quaternion.
-        return sqrt(self.vector.x * self.vector.x + self.vector.y * self.vector.y + self.vector.z * self.vector.z);
+        return sqrt(self.w * self.w + self.vector.x * self.vector.x + self.vector.y * self.vector.y + self.vector.z * self.vector.z);
+    }
+    float QuaternionLength(Quaternion *q) {
+        // Return the length of the quaternion.
+        return (float)[q length];
     }
     
     /**
@@ -219,6 +318,10 @@
         // Return a new Quaternion object with the normalized values.
         return [Quaternion initWithW:self.w Vector:[self.vector divide:length]];
     }
+    Quaternion* QuaternionNormalize(Quaternion *q) {
+        // Return the normalized quaternion.
+        return [q normalize];
+    }
 
     /**
      * @brief Calculates the conjugate (inverts) of the current Quaternion.
@@ -227,7 +330,7 @@
      */
     - (Quaternion*)conjugate {
         // Normalize the current quaternion and copy it into a temporary quaternion
-        Quaternion *temp = [Quaternion initWithW:self.w Vector:[self.vector copy]];
+        Quaternion *temp = [self copy];
 
         // Invert the vector part of the quaternion
         temp.vector.x *= -1;
@@ -236,6 +339,31 @@
 
         // Return the inverted quaternion
         return temp;
+    }
+    Quaternion* QuaternionConjugate(Quaternion *q) {
+        // Return the conjugate of the quaternion.
+        return [q conjugate];
+    }
+
+    /**
+     * @brief Calculates the inverse of the current Quaternion.
+     * 
+     * @return Quaternion: The inverse of the current Quaternion.
+     */
+    - (Quaternion*)inverse {
+        // Calculate the conjugate of the current quaternion.
+        Quaternion *conjugate = [self conjugate];
+        // Calculate the length of the current quaternion.
+        CGFloat length = [self length];
+        // Calculate the squared length of the current quaternion.
+        CGFloat squaredLength = length * length;
+
+        // Return a new Quaternion object with the inverse of the current quaternion.
+        return [Quaternion initWithW:conjugate.w / squaredLength Vector:[conjugate.vector divide:squaredLength]];
+    }
+    Quaternion* QuaternionInverse(Quaternion *q) {
+        // Return the inverse of the quaternion.
+        return [q inverse];
     }
 
     /**
@@ -249,6 +377,10 @@
         // Check if the two quaternions are equal.
         return (self.vector.x == quaternion.vector.x && self.vector.y == quaternion.vector.y && self.vector.z == quaternion.vector.z && self.w == quaternion.w);
     }
+    int QuaternionIsEqualTo(Quaternion *q1, Quaternion *q2) {
+        // Check if the two quaternions are equal.
+        return (int)[q1 isEqualTo:q2];
+    }
 
     /**
      * @brief Returns a string representation of the current Vector3.
@@ -257,7 +389,11 @@
      */
     - (NSString*)description {
         // Return the string representation of the current quaternion.
-        return [NSString stringWithFormat:@"(w:%f, %f, %f, %f)", self.w, self.vector.x, self.vector.y, self.vector.z];
+        return [NSString stringWithFormat:@"(w:%f, x:%f, y:%f, z:%f)", self.w, self.vector.x, self.vector.y, self.vector.z];
+    }
+    char* QuaternionDescription(Quaternion *q) {
+        // Return the string representation of the quaternion.
+        return (char*)[[q description] UTF8String];
     }
 
     /**
@@ -269,5 +405,10 @@
         // Return a new Quaternion object with the same values.
         return [Quaternion initWithW:self.w Vector:[self.vector copy]];
     }
+    Quaternion* QuaternionCopy(Quaternion *q) {
+        // Return the copied quaternion.
+        return [q copy];
+    }
 
+    /* --- End of Instance Methods --- */
 @end

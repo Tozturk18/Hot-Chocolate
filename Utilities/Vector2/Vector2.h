@@ -24,10 +24,12 @@
     /* --- Initializers --- */
     - (instancetype)initWithX:(CGFloat)x Y:(CGFloat)y;  // Initialize the vector2 with x and y coordinates
     + (instancetype)initWithX:(CGFloat)x Y:(CGFloat)y;  // Initialize the vector2 with x and y coordinates and allocate memory
+    Vector2* initVector2(CGFloat x, CGFloat y);         // Initialize the vector2 with x and y coordinates using a C function
     /* --- End of Initializers --- */
 
     /* --- Deinitialize --- */
     - (void)dealloc;                            // Deinitialize the vector2
+    void freeVector2(Vector2 *vector);          // Deinitialize the vector2 using a C function
     /* --- End of Deinitialize --- */
 
     /* --- Methods --- */
@@ -56,6 +58,9 @@
     // String Representation
     - (NSString *)description;                  // Get the string representation of the vector2
 
+    // Copy Operations
+    - (instancetype)copy;                        // Copy the vector2
+
     // Rotational Operations
     - (instancetype)rotateByDegrees:(CGFloat)angle aroundPoint:(Vector2 *)center; // Rotate the vector2 around a point by given degrees
     - (instancetype)rotateByDegrees:(CGFloat)angle;                               // Rotate the vector2 around the origin by given degrees
@@ -63,6 +68,44 @@
     - (instancetype)rotateByRadians:(CGFloat)angle aroundPoint:(Vector2 *)center; // Rotate the vector2 around a point by given radians
     - (instancetype)rotateByRadians:(CGFloat)angle;                               // Rotate the vector2 around the origin by given radians
     /* --- End of Methods --- */
+
+    /* --- C Methods --- */
+    // Vector Operations
+    Vector2* Vector2Add(Vector2 *vector1, Vector2 *vector2);       // Add two vector2s using a C function
+    Vector2* Vector2Subtract(Vector2 *vector1, Vector2 *vector2);  // Subtract two vector2s using a C function
+    Vector2* Vector2Multiply(Vector2 *vector, float scalar);     // Multiply a vector2 by a scalar using a C function
+    Vector2* Vector2Divide(Vector2 *vector, float scalar);       // Divide a vector2 by a scalar using a C function
+    float Vector2Dot(Vector2 *vector1, Vector2 *vector2);        // Dot product of two vector2s using a C function
+
+    // Scaling Operations
+    Vector2* Vector2Scale(Vector2 *vector, float factor);        // Scale a vector2 by a factor using a C function
+    Vector2* Vector2ScaleXY(Vector2 *vector, float xFactor, float yFactor);  // Scale the x and y components of a vector2 by separate factors using a C function
+    Vector2* Vector2ScaleX(Vector2 *vector, float xFactor);      // Scale the x component of a vector2 by a factor using a C function
+    Vector2* Vector2ScaleY(Vector2 *vector, float yFactor);      // Scale the y component of a vector2 by a factor using a C function
+
+    // Vector Properties
+    float Vector2Length(Vector2 *vector);                        // Get the length of a vector2 using a C function
+    Vector2* Vector2Normalize(Vector2 *vector);                    // Normalize a vector2 using a C function
+    float Vector2Distance(Vector2 *vector1, Vector2 *vector2);   // Get the distance between two vector2s using a C function
+    float Vector2Angle(Vector2 *vector1, Vector2 *vector2);      // Get the angle between two vector2s using a C function
+
+    // Vector Comparisons
+    int Vector2IsEqualTo(Vector2 *vector1, Vector2 *vector2);     // Check if two vector2s are equal using a C function
+
+    // String Representation
+    char* Vector2Description(Vector2 *vector);                 // Get the string representation of a vector2 using a C function
+
+    // Copy Operations
+    Vector2* Vector2Copy(Vector2 *vector);                      // Copy a vector2 using a C function
+
+    // Rotational Operations
+    Vector2* Vector2RotateByDegreesAroundPoint(Vector2 *vector, float angle, Vector2 *center);  // Rotate a vector2 around a point by given degrees using a C function
+    Vector2* Vector2RotateByDegrees(Vector2 *vector, float angle);       // Rotate a vector2 around the origin by given degrees using a C function
+
+    Vector2* Vector2RotateByRadiansAroundPoint(Vector2 *vector, float angle, Vector2 *center);  // Rotate a vector2 around a point by given radians using a C function
+    Vector2* Vector2RotateByRadians(Vector2 *vector, float angle);       // Rotate a vector2 around the origin by given radians using a C function
+    /* --- End of C Methods --- */
+
 
 @end
 /* --- End of Vector2 Object --- */

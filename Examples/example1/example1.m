@@ -11,43 +11,52 @@
 
 /* --- Imports --- */
 #import <Cocoa/Cocoa.h>
-#import "../../Utilities/Quaternion/Quaternion.h"
-#import "../../Utilities/Vector3/Vector3.h"
-#import "../../Utilities/Frame2/Frame2.h"
-#import "../../Utilities/Window/Window.h"
+#import <stdio.h>
+#import <stdlib.h>
+#import "../../HotChocolate.h"
 /* --- End of Imports --- */
 
 /* --- Main --- */
 int main(int argc, const char * argv[]) {
     @autoreleasepool {
+        Window *window = initWindow(0, 0, 800, 600);
 
-        Frame2 *frame = [Frame2 initWithX:0 Y:0 Width:800 Height:600];
+        window.window.title = @"Example 1";
+        //window.window.backgroundColor = [NSColor colorWithRed:atof(argv[1])/255.0 green:atof(argv[2])/255.0 blue:atof(argv[3])/255.0 alpha:1.0];
+        window.window.backgroundColor = [NSColor redColor];
 
-        Window *window = [[Window alloc] initWithFrame:frame];
+        // Showcase, multi-language support
+        // Initialize a 2D vector in C
+        Vector2 *v2 = initVector2(1, 2);
+        // Rotate the vector by 45 degrees in Objective-C
+        Vector2 *rotatedByDegrees = [v2 rotateByDegrees:45];
+        // Print out the results in Objective-C
+        NSLog(@"%@", [rotatedByDegrees description]);
 
-        window.title = @"Example 1";
-
+        freeVector2(v2);
 
         // Initialize vector to rotate
-        Vector3 *v = [Vector3 initWithX:5 Y:0 Z:0];
+        Vector3 *v = initVector3(1,2,3);
         // Initialize axis of rotation
-        Vector3 *axis = [Vector3 initWithX:0 Y:0 Z:1];
+        Vector3 *axis = initVector3(0,0,1);
         // Degree of rotation
-        CGFloat angle = 90.0;
+        float angle = 45.0;
         // Initialize the quaternion for rotation
-        Quaternion *q = [Quaternion initWithDegrees:angle Vector:axis];
+        Quaternion *q = initQuaternionWithDegrees(angle, axis);
         // Rotate the vector v using quaternion q
-        Vector3 *result = [v rotateByQuaternion:q];
+        Vector3 *result = Vector3RotateByQuaternion(v,q);
         // Print out the results
-        NSLog(@"\nInitial Vector:%@\nDegrees of Rotation:%f\nAxis of Rotation:%@\nQuaternion:%@\nResulting Vector:%@", [v description], angle, [axis description], [q description], [result description]);
+        printf("\nInitial Vector:%s\nDegrees of Rotation:%f\nAxis of Rotation:%s\nQuaternion:%s\nResulting Vector:%s\n", Vector3Description(v), angle, Vector3Description(axis), QuaternionDescription(q), Vector3Description(result));
 
         // Deallocate memory space
-        [v dealloc];
-        [axis dealloc];
-        [q dealloc];
-        [result dealloc];
+        freeVector3(v);
+        freeVector3(axis);
+        freeQuaternion(q);
+        freeVector3(result);
 
-        [window show];
+        printf("Hello, World!\n");
+
+        showWindow(window);
     }
     return 0;
 }

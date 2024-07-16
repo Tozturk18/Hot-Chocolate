@@ -48,6 +48,17 @@
     + (instancetype)initWithX:(CGFloat)x Y:(CGFloat)y {
         return [[Vector2 alloc] initWithX:x Y:y]; // Return the initialized Vector2 object.
     }
+
+    /**
+     * @brief Initializes the Vector2 object with the given x and y values.
+     * 
+     * @param x: The x component of the vector.
+     * @param y: The y component of the vector.
+     * @return instancetype: The initialized Vector2 object.
+     */
+    Vector2* initVector2(CGFloat x, CGFloat y) {
+        return [[Vector2 alloc] initWithX:x Y:y]; // Return the initialized Vector2 object.
+    }
     /* --- End of Initializers --- */
 
     /* --- Deinitlialize --- */
@@ -59,6 +70,15 @@
     - (void)dealloc {
         // Deallocate the Vector2 object.
         [super dealloc];
+    }
+
+    /**
+     * @brief Deallocates the Vector2 object.
+     * 
+     */
+    void freeVector2(Vector2 *vector) {
+        // Deallocate the Vector2 object.
+        [vector dealloc];
     }
     /* --- End of Deinitialize --- */
 
@@ -74,6 +94,10 @@
         // Return a new updated Vector2.
         return [[Vector2 alloc] initWithX:self.x + vector.x Y:self.y + vector.y];
     }
+    Vector2* Vector2Add(Vector2 *vector1, Vector2 *vector2) {
+        // Return a new updated Vector2.
+        return [vector1 add:vector2];
+    }
 
     /**
      * @brief Subtracts the given vector from the current vector.
@@ -84,6 +108,10 @@
     - (Vector2*)subtract:(Vector2*)vector {
         // Return a new updated Vector2.
         return [[Vector2 alloc] initWithX:self.x - vector.x Y:self.y - vector.y];
+    }
+    Vector2* Vector2Subtract(Vector2 *vector1, Vector2 *vector2) {
+        // Return a new updated Vector2.
+        return [vector1 subtract:vector2];
     }
 
     /**
@@ -96,6 +124,10 @@
         // Return a new updated Vector2.
         return [[Vector2 alloc] initWithX:self.x * scalar Y:self.y * scalar];
     }
+    Vector2* Vector2Multiply(Vector2 *vector, float scalar) {
+        // Return a new updated Vector2.
+        return [vector multiply:scalar];
+    }
 
     /**
      * @brief Divides the current vector with the given scalar.
@@ -107,6 +139,10 @@
         // Return a new updated Vector2.
         return [[Vector2 alloc] initWithX:self.x / scalar Y:self.y / scalar];
     }
+    Vector2* Vector2Divide(Vector2 *vector, float scalar) {
+        // Return a new updated Vector2.
+        return [vector divide:scalar];
+    }
 
     /**
      * @brief Does a dot product between two Vector2s.
@@ -117,6 +153,10 @@
     - (CGFloat)dot:(Vector2*)vector {
         // Return the dot product of the two Vector2s.
         return self.x * vector.x + self.y * vector.y;
+    }
+    float Vector2Dot(Vector2 *vector1, Vector2 *vector2) {
+        // Return the dot product of the two Vector2s.
+        return [vector1 dot:vector2];
     }
 
     /**
@@ -130,6 +170,10 @@
     - (instancetype)scale:(CGFloat)factor {
         // Return a new instance of this vector with all components multiplied by a given factor
         return [self multiply:factor];
+    }
+    Vector2* Vector2Scale(Vector2 *vector, float factor) {
+        // Return the scaled Vector2
+        return [vector scale:factor];
     }
 
     /**
@@ -145,6 +189,10 @@
         // Return a new instance of this vector with all components multiplied by a given factors
         return [[Vector2 alloc] initWithX:(self.x*xFactor) Y:(self.y*yFactor)];
     }
+    Vector2* Vector2ScaleXY(Vector2 *vector, float xFactor, float yFactor) {
+        // Return the scaled Vector2
+        return [vector scaleX:xFactor Y:yFactor];
+    }
 
     /**
      * @brief Scales the x component of the vector2 by a
@@ -157,6 +205,10 @@
     - (instancetype)scaleX:(CGFloat)xFactor {
         // Return a new instance of this vector with the x component multiplied by a given x factor
         return [[Vector2 alloc] initWithX:(self.x*xFactor) Y:self.y];
+    }
+    Vector2* Vector2ScaleX(Vector2 *vector, float xFactor) {
+        // Return the scaled Vector2
+        return [vector scaleX:xFactor];
     }
 
     /**
@@ -171,6 +223,10 @@
         // Return a new instance of this vector with the y component multiplied by a given y factor
         return [[Vector2 alloc] initWithX:self.x Y:(self.y*yFactor)];
     }
+    Vector2* Vector2ScaleY(Vector2 *vector, float yFactor) {
+        // Return the scaled Vector2
+        return [vector scaleY:yFactor];
+    }
 
     /**
      * @brief Calculates the length (magnitude) of the current Vector2.
@@ -180,6 +236,10 @@
     - (CGFloat)length {
         // Return the length of the current vector.
         return sqrt(self.x * self.x + self.y * self.y);
+    }
+    float Vector2Length(Vector2 *vector) {
+        // Return the length of the current vector.
+        return [vector length];
     }
 
     /**
@@ -199,6 +259,10 @@
             return [[Vector2 alloc] initWithX:0 Y:0];
         }
     }
+    Vector2* Vector2Normalize(Vector2 *vector) {
+        // Return the normalized Vector2.
+        return [vector normalize];
+    }
 
     /**
      * @brief Calculates the distance between the current vector and the given vector.
@@ -209,6 +273,10 @@
     - (CGFloat)distance:(Vector2*)vector {
         // Return the distance between the two Vector2s.
         return sqrt(pow(self.x - vector.x, 2) + pow(self.y - vector.y, 2));
+    }
+    float Vector2DistanceVector2(Vector2 *vector1, Vector2 *vector2) {
+        // Return the distance between the two Vector2s.
+        return [vector1 distance:vector2];
     }
 
     /**
@@ -221,6 +289,10 @@
         // Return the angle between the two Vector2s.
         return acos([self dot:vector] / ([self length] * [vector length]));
     }
+    float Vector2Angle(Vector2 *vector1, Vector2 *vector2) {
+        // Return the angle between the two Vector2s.
+        return [vector1 angle:vector2];
+    }
 
     /**
      * @brief Checks if the current vector is equal to the given vector.
@@ -232,6 +304,10 @@
         // Return YES if the vectors are equal, NO otherwise.
         return self.x == vector.x && self.y == vector.y;
     }
+    int Vector2IsEqualTo(Vector2 *vector1, Vector2 *vector2) {
+        // Return YES if the vectors are equal, NO otherwise.
+        return (int)[vector1 isEqualTo:vector2];
+    }
 
     /**
      * @brief Returns a string representation of the current Vector2.
@@ -241,6 +317,24 @@
     - (NSString*)description {
         // Return the string representation of the current vector.
         return [NSString stringWithFormat:@"(%f, %f)", self.x, self.y];
+    }
+    char* Vector2Description(Vector2 *vector) {
+        // Return the string representation of the current vector.
+        return (char*)[[vector description] UTF8String];
+    }
+
+    /**
+     * @brief Copies the current Vector2.
+     *
+     * @return Vector2*: The copied Vector2.
+     */
+    - (instancetype)copy {
+        // Return the copied Vector2.
+        return [[Vector2 alloc] initWithX:self.x Y:self.y];
+    }
+    Vector2* Vector2Copy(Vector2 *vector) {
+        // Return the copied Vector2.
+        return [[Vector2 alloc] initWithX:vector.x Y:vector.y];
     }
 
     /**
@@ -255,6 +349,10 @@
         // Return a new updated Vector2
         return [self rotateByRadians:angleInRadians aroundPoint:center];
     }
+    Vector2* Vector2RotateByDegreesAroundPoint(Vector2 *vector, float angle, Vector2 *center) {
+        // Rotate the Vector2 around the given point.
+        return [vector rotateByDegrees:angle aroundPoint:center];
+    }
 
     /**
      * @brief Rotates the current Vector2 by a given angle in degrees
@@ -265,6 +363,10 @@
     - (instancetype)rotateByDegrees:(CGFloat)angle {
         // Rotate the Vector2 around the origin.
         return [self rotateByDegrees:angle aroundPoint:[Vector2 initWithX:0 Y:0]];
+    }
+    Vector2* Vector2RotateByDegrees(Vector2 *vector, float angle) {
+        // Rotate the Vector2 around the origin.
+        return [vector rotateByDegrees:angle];
     }
 
     /**
@@ -289,6 +391,10 @@
         // Return a new updated Vector2
         return [[Vector2 alloc] initWithX:xNew Y:yNew];
     }
+    Vector2* Vector2RotateByRadiansAroundPoint(Vector2 *vector, float angle, Vector2 *center) {
+        // Rotate the Vector2 around the given point.
+        return [vector rotateByRadians:angle aroundPoint:center];
+    }
 
     /**
      * @brief Rotates the current Vector2 by a given angle in radians
@@ -299,6 +405,10 @@
     - (instancetype)rotateByRadians:(CGFloat)angle {
         // Rotate the Vector2 around the origin.
         return [self rotateByRadians:angle aroundPoint:[Vector2 initWithX:0 Y:0]];
+    }
+    Vector2* Vector2RotateByRadians(Vector2 *vector, float angle) {
+        // Rotate the Vector2 around the origin.
+        return [vector rotateByRadians:angle];
     }
     /* --- End of Vector Operations --- */
 @end

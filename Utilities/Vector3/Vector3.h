@@ -30,10 +30,12 @@
     - (instancetype)initWithX:(CGFloat)x Y:(CGFloat)y Z:(CGFloat)z; // Initialize the vector3 with x, y, and z coordinates
     + (instancetype)initWithX:(CGFloat)x Y:(CGFloat)y Z:(CGFloat)z; // Initialize the vector3 with x, y, and z coordinates and allocate memory
     + (instancetype)initWithX:(CGFloat)x Y:(CGFloat)y;              // Initialize the vector3 with x, y, and z(=0) coordinates and allocate memory
+    Vector3* initVector3(float x, float y, float z);                // Initialize the vector3 with x, y, and z coordinates using a C function
     /* --- End of Initializers --- */
 
     /* --- Deinitialize --- */
     - (void)dealloc;                            // Deallocates the vector3
+    void freeVector3(Vector3 *vector);          // Deallocates the vector3 using a C function
     /* --- End of Deinitialize --- */
 
     /* --- Methods --- */
@@ -76,6 +78,47 @@
     - (instancetype)rotateByRadians:(CGFloat)angle aroundAxis:(Vector3 *)center;    // Rotate the vector3 around an axis by given radians
     - (instancetype)rotateByRadians:(CGFloat)angle;                                 // Rotate the vector3 around the origin by given radians
     /* --- End of Methods --- */
+
+    /* --- C Methods --- */
+    // Vector Operations
+    Vector3* Vector3Add(Vector3 *vector1, Vector3 *vector2);        // Add a vector3 to the current vector3
+    Vector3* Vector3Subtract(Vector3 *vector1, Vector3 *vector2);   // Subtract a vector from the current vector3
+    Vector3* Vector3Multiply(Vector3 *vector, float scalar);      // Multiply the vector2 by a scalar
+    Vector3* Vector3Divide(Vector3 *vector, float scalar);          // Divide the vector3 by a scalar
+    float Vector3Dot(Vector3 *vector1, Vector3 *vector2);           // Dot product of this vector3 by another vector3
+    Vector3* Vector3Cross(Vector3 *vector1, Vector3 *vector2);      // Cross product of this vector3 by another vector3
+
+    // Scaling Operations
+    Vector3* Vector3Scale(Vector3 *vector, float factor);           // Scale the x, y, and z components of the vector by the given factor
+    Vector3* Vector3ScaleX(Vector3 *vector, float xFactor);         // Scale the x component of the vector by the given factor
+    Vector3* Vector3ScaleY(Vector3 *vector, float yFactor);         // Scale the y component of the vector by the given factor
+    Vector3* Vector3ScaleZ(Vector3 *vector, float zFactor);         // Scale the z component of the vector by the given factor
+    Vector3* Vector3ScaleXYZ(Vector3 *vector, float xFactor, float yFactor, float zFactor); // Scale the x, y, and z components of the vector with seperate factors
+
+    // Vector Properties
+    float Vector3Length(Vector3 *vector);                           // Get the length of the vector3
+    Vector3* Vector3Normalize(Vector3 *vector);                     // Normalize the vector3
+    float Vector3Distance(Vector3 *vector1, Vector3 *vector2);      // Get the distance between two vectors3
+    float Vector3Angle(Vector3 *vector1, Vector3 *vector2);         // Get the angle between two vectors3
+
+    // Vector Comparisons
+    int Vector3IsEqualTo(Vector3 *vector1, Vector3 *vector2);      // Check if the vector2 is equal to another vector3
+
+    // String Representation
+    char* Vector3Description(Vector3 *vector);                      // Get the string representation of the vector3
+
+    // Copy Operations
+    Vector3* Vector3Copy(Vector3 *vector);                          // Copy the vector3
+
+    // Rotational Operations
+    Vector3* Vector3RotateByQuaternion(Vector3 *vector, Quaternion *quaternion);                // Rotate the vector3 by a quaternion
+
+    Vector3* Vector3RotateByDegreesAroundAxis(Vector3 *vector, float angle, Vector3 *center);  // Rotate the vector3 around an axis by given degrees
+    Vector3* Vector3RotateByDegrees(Vector3 *vector, float angle);                              // Rotate the vector3 around the origin by given degrees
+
+    Vector3* Vector3RotateByRadiansAroundAxis(Vector3 *vector, float angle, Vector3 *center);  // Rotate the vector3 around an axis by given radians
+    Vector3* Vector3RotateByRadians(Vector3 *vector, float angle);                              // Rotate the vector3 around the origin by given radians
+    /* --- End of C Methods --- */
 
 @end
 /* --- End of Vector2 Object --- */
